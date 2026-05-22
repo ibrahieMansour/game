@@ -166,15 +166,16 @@
 
         boxes[usedNumbers[count]].classList.add("active");
 
-        count++;
-
+        
         countText.innerHTML = count;
-
+        
         if (seifNumber === count) {
           result.innerHTML = "🎉 Seif";
         } else {
           result.innerHTML = "Not Seif";
         }
+        
+        count++;
 
         // disable after 6 rolls
         if (count === 6) {
