@@ -128,7 +128,6 @@
       <div class="buttons">
         <button id="rollBtn">Roll</button>
         <button id="hideBtn">Hide Result</button>
-        <button id="resetBtn">Reset</button>
       </div>
 
       <div class="info">Roll Count: <span id="count">0</span> / 6</div>
@@ -141,17 +140,22 @@
 
       const rollBtn = document.getElementById("rollBtn");
       const hideBtn = document.getElementById("hideBtn");
-      const resetBtn = document.getElementById("resetBtn");
 
       const result = document.getElementById("result");
       const countText = document.getElementById("count");
 
       let count = 0;
+      let random;
 
       // only one Seif
       let seifNumber = Math.floor(Math.random() * 6);
 
       let usedNumbers = [];
+
+      for (let i = 1; i <= 6; i++) {
+        random = Math.floor(Math.random() * 6);
+        usedNumbers.push(random);
+      }
 
       rollBtn.addEventListener("click", () => {
         if (count >= 6) {
@@ -160,21 +164,13 @@
 
         boxes.forEach((box) => box.classList.remove("active"));
 
-        let random;
-
-        // do {} while (usedNumbers.includes(random));
-
-        random = Math.floor(Math.random() * 6);
-
-        usedNumbers.push(random);
-
-        boxes[random].classList.add("active");
+        boxes[usedNumbers[count]].classList.add("active");
 
         count++;
 
         countText.innerHTML = count;
 
-        if (random === seifNumber) {
+        if (seifNumber === count) {
           result.innerHTML = "🎉 Seif";
         } else {
           result.innerHTML = "Not Seif";
@@ -192,25 +188,6 @@
         boxes.forEach((box) => box.classList.remove("active"));
       });
 
-      // reset game
-      resetBtn.addEventListener("click", () => {
-        count = 0;
-
-        usedNumbers = [];
-
-        seifNumber = Math.floor(Math.random() * 6);
-
-        countText.innerHTML = 0;
-
-        result.innerHTML = "";
-
-        rollBtn.disabled = false;
-
-        boxes.forEach((box, index) => {
-          box.classList.remove("active");
-          box.innerHTML = index + 1;
-        });
-      });
     </script>
   </body>
 </html>
