@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seif Random Game</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #111;
+        color: white;
+        font-family: Arial;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+      }
+
+      .people {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+
+      .box {
+        background: #222;
+        border: 2px solid #444;
+        border-radius: 12px;
+        padding: 35px 10px;
+        font-size: 24px;
+        transition: 0.3s;
+      }
+
+      .active {
+        background: #00b894;
+        border-color: #00ffbf;
+        transform: scale(1.05);
+      }
+
+      .buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 10px;
+        background: #0984e3;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+        flex: 1;
+        min-width: 120px;
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .info {
+        margin-top: 20px;
+        font-size: 22px;
+      }
+
+      .result {
+        margin-top: 15px;
+        font-size: 28px;
+        color: #00ffbf;
+        min-height: 40px;
+        word-break: break-word;
+      }
+
+      /* Mobile */
+      @media (max-width: 600px) {
+        .people {
+          gap: 10px;
+        }
+
+        .box {
+          padding: 25px 5px;
+          font-size: 20px;
+        }
+
+        button {
+          width: 100%;
+          flex: none;
+        }
+
+        .info {
+          font-size: 18px;
+        }
+
+        .result {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="people">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+        <div class="box">4</div>
+        <div class="box">5</div>
+        <div class="box">6</div>
+      </div>
+
+      <div class="buttons">
+        <button id="rollBtn">Roll</button>
+        <button id="hideBtn">Hide Result</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+
+      <div class="info">Roll Count: <span id="count">0</span> / 6</div>
+
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      const boxes = document.querySelectorAll(".box");
+
+      const rollBtn = document.getElementById("rollBtn");
+      const hideBtn = document.getElementById("hideBtn");
+      const resetBtn = document.getElementById("resetBtn");
+
+      const result = document.getElementById("result");
+      const countText = document.getElementById("count");
+
+      let count = 0;
+
+      // only one Seif
+      let seifNumber = Math.floor(Math.random() * 6);
+
+      let usedNumbers = [];
+
+      rollBtn.addEventListener("click", () => {
+        if (count >= 6) {
+          return;
+        }
+
+        boxes.forEach((box) => box.classList.remove("active"));
+
+        let random;
+
+        // do {} while (usedNumbers.includes(random));
+
+        random = Math.floor(Math.random() * 6);
+
+        usedNumbers.push(random);
+
+        boxes[random].classList.add("active");
+
+        count++;
+
+        countText.innerHTML = count;
+
+        if (random === seifNumber) {
+          result.innerHTML = "🎉 Seif";
+        } else {
+          result.innerHTML = "Not Seif";
+        }
+
+        // disable after 6 rolls
+        if (count === 6) {
+          rollBtn.disabled = true;
+        }
+      });
+
+      // hide result only
+      hideBtn.addEventListener("click", () => {
+        result.innerHTML = "";
+        boxes.forEach((box) => box.classList.remove("active"));
+      });
+
+      // reset game
+      resetBtn.addEventListener("click", () => {
+        count = 0;
+
+        usedNumbers = [];
+
+        seifNumber = Math.floor(Math.random() * 6);
+
+        countText.innerHTML = 0;
+
+        result.innerHTML = "";
+
+        rollBtn.disabled = false;
+
+        boxes.forEach((box, index) => {
+          box.classList.remove("active");
+          box.innerHTML = index + 1;
+        });
+      });
+    </script>
+  </body>
+</html>
